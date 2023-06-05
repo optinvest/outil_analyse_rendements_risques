@@ -5,3 +5,4 @@ PyPortfolioOpt
 plotly
 pandas
 numpy
+scikit-learn
