@@ -1,0 +1,7 @@
+yfinance
+quantstats
+plotly
+PyPortfolioOpt
+plotly
+pandas
+numpy
