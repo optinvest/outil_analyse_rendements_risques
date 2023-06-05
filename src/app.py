@@ -24,7 +24,7 @@ col1, col2, col3 = st.columns(3)
 
 if btn_run:
     actions = [ele.strip() for ele in input_actions.split(",")]
-    actions = [ele for ele in actions if len(ele)]
+    actions = list(set([ele for ele in actions if len(ele)]))
 
     # pour le moment seul l'option 1 est possible pour la sélection d'une durée
     data = download_financial_data(actions=actions, period=period)
