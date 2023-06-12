@@ -68,11 +68,11 @@ def construct_ptf_df(data, actions, w, rets, stds, sharpes, mu, S):
     ptf_df = pd.DataFrame({"Return": rets, "Volatility": stds, "Sharpe": sharpes, "Type": "Allocation Aléatoire"}).join(pd.DataFrame(w, columns=actions))
     ptf_indiv_df = pd.DataFrame({"Return": mu.values, "Volatility": np.sqrt(np.diag(S)), "Sharpe": mu.values / np.sqrt(np.diag(S))}).join(pd.DataFrame(np.eye(mu.shape[0]), columns=mu.index))
     ptf_indiv_df["Type"] = mu.index
-    ptf_equi_df = pd.DataFrame({"Return": mu @ np.ones(mu.shape[0]) / mu.shape[0], 
-                                "Volatility": np.sqrt(qs.stats.volatility((data * np.ones(mu.shape[0]) / mu.shape[0]).sum(axis=1)))}, index=[0])
-    ptf_equi_df["Sharpe"] = ptf_equi_df["Return"] / ptf_equi_df["Volatility"]
-    ptf_equi_df = ptf_equi_df.join(pd.DataFrame([np.ones(mu.shape[0]) / mu.shape[0]], columns=mu.index))
-    ptf_equi_df["Type"] = "Equi-réparti"
+    w_equi = np.ones(mu.shape[0]) / mu.shape[0]
+    rets_equi = w_equi.dot(mu.values)
+    stds_equi = np.sqrt(w_equi @ S @ w_equi.T)
+    sharpe_equi = rets_equi / stds_equi
+    ptf_equi_df = pd.DataFrame({"Return": [rets_equi], "Volatility": [stds_equi], "Sharpe": [sharpe_equi], "Type": "Equi-réparti"}).join(pd.DataFrame([w_equi], columns=actions))
     ptf_df = pd.concat([ptf_df, ptf_indiv_df, ptf_equi_df], axis=0).reset_index(drop=True)
     return ptf_df
 
