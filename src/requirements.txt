@@ -1,3 +1,4 @@
+streamlit==1.14.0
 yfinance
 quantstats
 plotly
